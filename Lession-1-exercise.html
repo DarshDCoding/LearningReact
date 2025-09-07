@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics Exercises</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+    <script>
+      console.log("Radhe Radhe...");
+    </script>
+    <script src="./external-libraries/react.js"></script>
+    <script src="./external-libraries/react-dom.js"></script>
+    <script src="./external-libraries/bable.js"></script>
+    <script src="./external-libraries/dayjs.js"></script>
+
+    <script type="text/babel">
+      //1a. Using React, display a button on the website with the text "Good job!" inside the button.
+      const buttonWithGoodJob= <button>Good job!</button> //done.
+
+      //1b. Using React, display a pragraph with the text "My name is [NAME]" on the website (replace [NAME] with your name).
+      const paraWithMyName = <p>My name is Darsh</p> //done.
+
+      //1c. Create the esign on the right and display it on the website using React. 
+      const design= (
+        <>
+        <p>Cotton Socks</p>
+        <p>Price : $10</p>
+        <button>Add to Cart</button>
+        </>
+      ) //done.
+
+      //1d. You buy 1 pack of socks for $10 and 2 T-shirts for $8 each. Using JavaScript, calculate the total cost of this order, save it in a variable named productCost, and display it in the Console.
+      const socksPrice= 10;
+      const tshirtPrice = 8;
+      const numberOfSocks =1;
+      const numberOfTshirts =2;
+
+      const productCost = (socksPrice*numberOfSocks) + (tshirtPrice*numberOfTshirts);
+      console.log(productCost); //done. I know I don't have to do this in so long way...lol
+
+      //1e. Continuing from 1d, insert the productCost variable into a paragraph element, create the design below, and display it on the website.
+
+      const productCostDesign = <p>Product cost: ${productCost}</p>
+
+      //1f. Continuing from 1e, let's pretend the shipping cost is $5. Save this in a variable named shippingCost, calculate the total cost using JavaScript (productCost + shippingCost), and display the results on the website using the design below:
+      const shippingCost = 5;
+      const finalTotal = (
+        <>
+        <p>Product cost: ${productCost}</p>
+        <p>Shipping cost: ${shippingCost}</p>
+        <p>Total cost: ${productCost + shippingCost}</p>
+        <button>Place your order</button>
+        </>
+      ); //done.
+
+      //1g. We're going to load the DayJS external library on the website (DayJS is an external library that helps us work with dates easier).
+        //a. To load DayJS, create a <script> above your code, and load the URL:https:unpkg.com/supersimpledev/dayjs.js //done.
+        //b. After DayJS is loaded, use the code: dayjs().format('MMMM D') to get the current date. Display this in the console.
+        const currentDate = dayjs().format('MMMM D');
+        console.log(currentDate); //done.
+
+      //1h. Continuing from 1g, insert the date in a paragraph element, and display it on the website in this format: Today is August 28
+
+      const renderDate = <p>Today is {currentDate}</p> //done.
+
+      //1i. Using DayJS, get the current time using dayjs().format('HH:mm:ss') and display it on the website in this format: Current time: 21:39:28
+
+      let currentTime = dayjs().format('HH:mm:ss')
+      let currentTimeRender = <p>Current time: {currentTime}</p> //done.
+
+      //11j. We'll create a clock. Continue form exercise 1i and do these steps:
+            //a. First, insted of doing ReactDOM.createRoot(...).render(...);, save the root in a avariable const root:ReactDOM.createRoot(...); and then do root.render(...);
+            const container = document.querySelector(".js-container");
+            const root = ReactDOM.createRoot(container) //done.
+
+            //b. Use the JavaScript code: setInterval(()->{...}, 1000); (replace ... with some code and it will run this code every second).
+            const liveTime = setInterval(()=> {
+                currentTime = dayjs().format('HH:mm:ss')
+                currentTimeRender = <p>Current time: {currentTime}</p>
+                root.render(currentTimeRender);
+            }, 1000); //done....
+
+    </script>
+  </body>
+</html>

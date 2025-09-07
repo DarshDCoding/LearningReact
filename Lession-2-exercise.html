@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lession-2 Exercises</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+    <script>
+      console.log("Radhe Radhe...");
+    </script>
+    <script src="./external-libraries/react.js"></script>
+    <script src="./external-libraries/react-dom.js"></script>
+    <script src="./external-libraries/bable.js"></script>
+
+    <script type="text/babel">
+      /*2a. Create an <App> component that returns a paragraph with the text:
+        "Hello, welcome to my website" inside.
+        Then, render this <App>.*/ //done.
+      const App = () => {
+        return (
+          <>
+            <p>Hello, welcome to my website</p>
+            <LoginForm />
+            <Product name="Cotton Socks" price="10.90" discount="5.45" imageSrc="./assets/cotton-socks.png"/>
+            <Product name="Tennis balls" price="6.00" imageSrc="./assets/tennis-balls.png" />
+            <Product name="Plain T-Shirt" price="7.99" imageSrc="./assets/plain-t-shirt.png" />
+          </>
+        );
+      };
+      /*2b. Continuing form 2a, in the <App> component, add 2 buttons after the paragraph: "Login" and "Sign up"
+        - Use a Fragment to group them together
+        - Use () to write the JSX on multiple lines
+        */
+      const Button = ({ action }) => {
+        return <button>{action}</button>;
+      }; //done... solution is been pasted in solution1.
+
+      /*2c. Continuing from 2b, in the <App> component, add 2 text boxes above the buttons with the placeholders "Email" and "Password".
+      - Lay out the textboxes on separate lines using <div>
+      - Try Adding the attribute type="password" to the textbox. This will cover up the text as you type.*/
+
+      const InputField = ({ action }) => {
+        return (
+          <div>
+            {/*
+              {action === "email" && <input type="email" placeholder={action} />}
+              {action === "password" && (
+                <input type="password" placeholder={action} />
+              )}
+              */}
+
+              {/*Same shit as above...just little smarter...*/}
+              {action === "email"? <input type="email" placeholder={action} />: <input type="password" placeholder={action} />}
+          </div>
+        );
+      }; //done.
+
+      /*2d. Continuing form 2c, create a new component called Loginform, and move the textboxes and buttons (all the login-reated code) into this component. Then, inside <App>, use <LoginForm> to create the textboxes and buttons.*/
+
+      const LoginForm = () => {
+        return (
+          <form action="">
+            <InputField action="email" />
+            <InputField action="password" />
+            <Button action="Login" />
+            <Button action="Sign up" />
+          </form>
+        );
+      };
+
+      /*2e. Let's say we're creating an e-commerce app, and one of the products is socks. Create a <App> component and display the details on the right onto the website*/
+
+      const Product = ({ name, price, discount, imageSrc}) => {
+        return (
+          <div class="product" data-product-name={name}>
+            <img src={imageSrc} alt="" srcset="" height="100"/>
+            <p id={name}>{name}</p>
+            
+            {/*{!discount && <p>Price : $ {price}</p>}
+            {discount && (
+              <>
+                <del>
+                  <p>Price : $ {price}</p>
+                </del>
+                <p>Discount price: ${discount}</p>
+              </>
+            )}*/}
+
+            {/*Using ternary operator for exact same thing as above*/}
+            {discount ? ( 
+              <>
+                <del>
+                  <p>Price : $ {price}</p>
+                </del>
+                <p>Discount price: ${discount}</p>
+              </>
+            ):
+            (<p>Price : $ {price}</p>)
+            }
+            <Button action="Add to Cart" /> {/*using solution 2b*/} 
+          </div>
+        );
+      };
+
+      /*Display 2 more products on the website: tennis balls and a t-shirt.
+      Insted of duplicating the code, create a <ProductDetails> component, and use props to make it reusable. Then, display 3 <ProductDetails> on the website for the socks, tennisballs, t-shirt.*/
+      //hehe...I already solved it in solution of 2e. but let's display.
+
+      /*2g. Continuing from 2f, some products can have a discount. Add a prop to <ProductDetails> called discountPrice. If discountPrice exists, display it under the original price.
+        - Give the socks product a discount price of $5.45*/
+      //lets update 2e.
+
+      /*2h. If a product has a discountPrice also cross out the original price.
+        - To cross out text, surround it with the element: <del>...</del>
+        - Don't cross out the original price if there's no discount. To check if discountPrice does not exist use !discountPrice
+        - There are several ways to do this exercise. As long as you get the final result, your're good.*/
+
+      /*2i. JavaScript has a feature called the ternary operator:
+      const result = value1 ? value2: value3;
+      if value1 is true, then the result is value2. Else, the result is value3.
+        - This lets us insert an if-else statement directly in the JSX.
+        - Update the previous exercise to use a ternary operator in the JSX.*/
+
+      /*2j. We'll add an image at the top of each Product. In your browser, go to supersimple.dev/images/____ (repalce ___ with cotton-socks.png, tennis-balls.png, and plain-t-shirt.png). Download the images.
+        -In <ProductDetails> add an <img> at the top, and add a prop called imageSrc. Give the <img> the attribute src={imageSrc} (this sets src attribute to the value of the imageSrc prop).
+        -Then in <App>, give each <Product> a prop imageSrc="___" (replace ___ with the file name of the image, like cotton-socks.png)*/
+
+      const container = document.querySelector(".js-container");
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script>
+  </body>
+</html>

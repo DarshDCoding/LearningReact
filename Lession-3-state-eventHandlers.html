@@ -14,50 +14,78 @@
     <script type="text/babel">
       console.log("Radhe Radhe...");
 
-      function ChatInput({chatMessages, setChatMessages}) {
+      function ChatInput({ chatMessages, setChatMessages }) {
         //done...
-        const [inputText, setInputText] = React.useState("")
-        const saveInputText = event =>{
-            setInputText(event.target.value)
-        }
+        const [inputText, setInputText] = React.useState("");
+        const [isLoading, setIsLoading] = React.useState(false);
+        const saveInputText = (event) => {
+          setInputText(event.target.value);
+        };
 
-        const sendMessage=(event)=>{
-            event.preventDefault()
-            const newChatMessages =[
+        const sendMessage = async (event) => {
+          if (isLoading || inputText === "") {
+            return;
+          }
+
+          setIsLoading(true);
+          // event.preventDefault()
+          const newChatMessages = [
             ...chatMessages,
             {
-                message:inputText,
-                sender:'user',
-                id:crypto.randomUUID()
-            }
-          ]
+              message: inputText,
+              sender: "user",
+              id: crypto.randomUUID(),
+            },
+          ];
+          setIsLoading(false);
 
-          setChatMessages(newChatMessages);
-
-          const response = Chatbot.getResponse(inputText);
+          // setChatMessages(newChatMessages);
           setChatMessages([
             ...newChatMessages,
             {
-                message:response,
-                sender:'bot',
-                id:crypto.randomUUID
-            }
-          ])
+              message: "Loading...",
+              sender: "bot",
+              id: crypto.randomUUID(),
+            },
+          ]);
+
+          // const response = Chatbot.getResponse(inputText);
+          const response = await Chatbot.getResponseAsync(inputText);
+          setChatMessages([
+            ...newChatMessages,
+            {
+              message: response,
+              sender: "bot",
+              id: crypto.randomUUID(),
+            },
+          ]);
 
           setInputText("");
-        }
+        };
+        const sendOnKeyDown = (event) => {
+          if (event.key === "Enter") {
+            sendMessage();
+          } else if (event.key === "Escape") {
+            setInputText("");
+          }
+        };
         return (
-          <form>
+          <>
+            {/*<form>*/}
             <input
               type="text"
               id="prompt"
               placeholder="Send the message to Chatbot"
               size="30"
               onChange={saveInputText}
+              onKeyDown={sendOnKeyDown}
               value={inputText}
             />
-            <button onClick={sendMessage} type="submit">Send</button>
-          </form>
+            <button onClick={sendMessage} type="submit">
+              Send
+            </button>
+            {/*</form>*/}
+          </>
         );
       }
 
@@ -87,8 +115,7 @@
           </div>
         );
       };
-      const ChatMessages = ({chatMessages}) => {
-
+      const ChatMessages = ({ chatMessages }) => {
         // const [chatMessages, setChatMessages]=array;
         // const chatMessages = array[0];
         // const setChatMessages = array[1];
@@ -107,18 +134,39 @@
           </>
         );
       };
+      /*Below are questions for lession 3 exercise...*/
+      /*3i. Insted of clicking the "Send" button, we can also send a message by pressing "Enter" on our keyboard. We'll add this feature to the project.
+        -Add a new event prop onKeyDown to the <input>. This runs a function each time we press a key on our keyboard.
+        - The function gets an event parameneter, and we can get the key that was pressed using event.key
+        - If event.key is "Enter", send the message.*/
+      //actully i have already solved it by using form and type="submit" on the button...but let's do this way also.
+      //done...it was so obvious that I forgot to consider it.
 
-      
+      /*3j. If we type in the <input> and press "Esc" (or "Escape") it should remove the text in the <input>
+       */
+      //done....
+
+      /*3k. In the real world, the Chatbot does not respond immediately, it takes some time to think, and then respond (see the final Chatbot porject).
+      We'll learn how to handle this situation.
+        - Change Chatbot.getResponse to Chatbot.getResponseAsync (for this function, the chatbot thinks for a second, and then responds.
+        - Chatbot.getResponseAsync returns a promise (promise = a value that is not available yet, but will be available in the future).
+        - Add await in front of Chatbot.getResponseAsync to wait for it to finish (wait for the value to be available in the future).
+        - Add async in front of function sendMessage() (because we can only use await inside an async function).
+        */
+
+      /*3l. Now that we wait for the Chatbot's response, let's improve the app:
+        - Update the code so it removes the text in the textbox right after sending our message (otherwise, the text will stay in the textbox for a while, until the response is ready, which doesn't look good).
+        - While waiting for the Chatbot's response, display a "Loading..." message and remove it after.*/
+
       const App = () => {
         const [chatMessages, setChatMessages] = React.useState([]);
         return (
           <>
-            <ChatInput 
-            chatMessages={chatMessages}
-            setChatMessages={setChatMessages}
+            <ChatInput
+              chatMessages={chatMessages}
+              setChatMessages={setChatMessages}
             />
-            <ChatMessages
-            chatMessages={chatMessages} />
+            <ChatMessages chatMessages={chatMessages} />
           </>
         );
       };

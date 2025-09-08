@@ -33,7 +33,7 @@
             ))}
           </>
         );
-      }; //done....
+      }; //done.... 
       /*3b. Using React.useState(), save a count. The count sghould have an initial value of 0, and React.useState() should have retrun 2 values:
       count(the current data) and setCount(the updater function).
         - Update the text in the button so it displays the count insted of 0.
@@ -58,17 +58,35 @@
         const putName =(event)=>{
             setName(event.target.value)
         }
+
+        const resetFunc =(element)=>{
+          setName("")
+        }
+
+        const showExample =(event)=>{
+          event.preventDefault()
+          setName("Darsh")
+        }
+
         return (
             <>
-            <input type="text" placeholder="Type a name here" onChange={putName}/>
+            <form action="">
+              <input type="text" placeholder="Type a name here" onChange={putName} value={name}/>
+              <button type="reset" onClick={resetFunc}>Reset</button>
+              <button type="text" onClick={showExample}>Example</button>
+            </form>
             <p>Hello {name}</p>
             </>
         )
       }
       /*3h. Add 2 buttons beside the <input>, "Reset" and "Example". 
-        - When clicking the Rest button, it removes the text in the <input>. 
+        - When clicking the Reset button, it removes the text in the <input>. 
         - When clicking the Example button, it sets an example text in the <input>, like "Alice" (or any name you want).*/
-        //let's see this tommorow.
+        //let's see this tommorow. //done baby...
+
+      /*arreee we have to add code to chatbot now.*/
+
+
         
       const App = () => {
         const [count, setCount] = React.useState(0);

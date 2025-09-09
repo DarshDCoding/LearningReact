@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+    <style>
+      .btn {
+        width: fit-content;
+        background-color: rgb(25, 135, 84);
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-size: 15px;
+        border: none;
+        color: white;
+        cursor: pointer;
+        margin-right: 5px;
+      }
+      .btn-off {
+        background-color: rgb(220, 53, 69);
+      }
+      .form{
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .form-heading{
+        font-size: 2rem;
+      }
+      .form-input{
+        padding: 12px 20px;
+        font-size: 15px;
+        margin-block: 5px;
+      }
+      .form-btn{
+        background-color: rgb(0, 123, 255);
+      }
+      .app-container{
+        display: flex;
+        flex-direction: column;
+        gap:1rem
+      }
+    </style>
+  </head>
+  <body>
+    <div class="js-container"></div>
+    <script>
+      console.log("Radhe Radhe...");
+    </script>
+    <script src="./external-libraries/react.js"></script>
+    <script src="./external-libraries/react-dom.js"></script>
+    <script src="./external-libraries/bable.js"></script>
+    <script src="./external-libraries/dayjs.js"></script>
+
+    <script type="text/babel">
+      /*4a. Create the button on the right using rEact and CSS. Use the background color: rgb(25, 135, 84)*/
+      const Button = () => {
+        const [isButtonOn, setIsButtonOn] = React.useState(true);
+
+        const isButtonOnFunc = () => {
+          if (isButtonOn) {
+            setIsButtonOn(false);
+          } else {
+            setIsButtonOn(true);
+          }
+        };
+        return (
+          <button
+            className={isButtonOn ? "btn" : "btn btn-off"}
+            onClick={isButtonOnFunc}
+          >
+            {isButtonOn ? "ON" : "OFF"}
+          </button>
+        );
+      }; //done...
+
+      /*4b. Using React.useState(), save a boolean isButtonOn. This will switch between true and false when clicking the button. Using isButtonOn and the Ternary Operator (?:), switch the text between "ON" and "OFF" when clicking the button*/
+      //done...
+
+      /*4c. When the button is "OFF", make it red. (Using the Ternary Operator, and give the button a different className and use the background color rgb:(220, 53, 69)*/
+      //done...
+
+      /*4d. Start from a new React website and create the design on the right.
+            -Background color: rgb(0, 123, 255)*/
+        //done...
+      const InputField = ({type, placeholder}) => {
+        const [showPassword, setShowPassword]= React.useState(false)
+
+        const toggleVisibility =()=>{
+            if (showPassword){
+                setShowPassword(false)
+            }else{
+                setShowPassword(true)
+            }
+        }
+        return(
+            <div>
+                {type==="password"
+                ?<>
+                    <input type={showPassword ? "text":"password"} placeholder={placeholder} className="form-input" />
+                    <button onClick={toggleVisibility} type="button">{showPassword ? "Hide": "Show" }</button>
+                </>
+                :<input type={type} placeholder={placeholder} className="form-input" /> }
+                
+            </div>
+        )
+      };
+      const FormButton = ({action}) => {
+        return(
+            <>
+            {action == "Login"
+            ? <button type="submit" className="btn form-btn">{action}</button> 
+            : <button type="" className="btn form-btn">{action}</button>}
+            </>
+        );
+      };
+      const LoginForm = () => {
+        return (
+          <form className="form">
+            <p className="form-heading">Hello, welcome to my website</p>
+            <div className="input-field-container">
+              <InputField type="email" placeholder="Email"/>
+              <InputField type="password" placeholder="Password"/>
+            </div>
+            <div className="form-buttons">
+              <FormButton action="Login" />
+              <FormButton action= "Sign up" />
+            </div>
+          </form>
+        );
+      };
+      /*4e. Add a button beside the password to show/hide the password.*/
+      //done...
+
+      /*4f. We'll create the clock form lession 1 exercises using hooks:
+        - Load the day.js library
+        - Using React.useState() save a string time. To get the current time as string, you can use dayjs().format("HH:mm:ss") 
+        - Using React.useEffect() run this code once after the component is created: setInterval(()=>{},1000) (this code runs a function every 1000 millisecods or 1 second).
+        -In the function that we give to setInterval, get the time again using dayjs().format("HH:mm:ss") and update the State.*/
+        // All i understood is we have to create a clock using hooks...let's go...
+        //done...
+
+        const Clock =()=>{
+            const [time, setTime]= React.useState(dayjs().format('HH:mm:ss'))
+            const timeElem = React.useRef(null)
+            React.useEffect(()=>{
+                setInterval(()=>{
+                    console.log("run Code")
+                    setTime(dayjs().format('HH:mm:ss'))
+                },1000)
+            },[timeElem])
+            return(
+                <div className="clock" ref={timeElem}>
+                Current time: {time}
+                </div>
+            )
+        }
+
+        /*Add console.log('run code'); inside setInterval and check how many times it runs. Then, remove the dependency array ([]) form React.useEffect() and check how many times it runs.*/
+        //It is running same irrespective of dependency array.
+        
+      const App = () => {
+        return (
+          <div className="app-container">
+            <p>Radhe Radhe...</p>
+            <Button />
+            <LoginForm />
+            <Clock />
+          </div>
+        );
+      };
+      const container = document.querySelector(".js-container");
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script>
+  </body>
+</html>

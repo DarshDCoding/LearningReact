@@ -3,6 +3,68 @@
   <head>
     <title>Chatbot</title>
     <style>
+      body{
+        font-family: Arial, Helvetica, sans-serif;
+        margin-block: 0;
+        padding: 0;
+      }
+      .send-button {
+        background-color: rgb(25, 135, 84);
+        color: white;
+        padding: 12px 20px;
+        margin-left: 10px;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      .chat-input {
+        padding: 12px 15px;
+        border-radius: 10px;
+        border-width: 1px;
+        font-size: 15px;
+
+        flex-grow: 1;
+      }
+      .chat-input-container {
+        display: flex;
+        margin-bottom: 60px;
+      }
+      .app-container {
+        max-width: 600px;
+        margin-inline: auto;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .chat-message-user{
+        display: flex;
+        justify-content:end;
+        align-items: start;
+      }
+      .chat-message-robot{
+        display: flex;
+        align-items: start;
+      }
+      .chat-message-text{
+        background-color: rgb(238, 238, 238);
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-inline: 10px;
+        margin-bottom: 20px;
+        max-width: 300px;
+      }
+      .chat-message-profile{
+        height: 45px;
+        border-radius: 100px;
+
+      }
+      .chat-messages-container{
+        flex-grow: 1;
+        margin-top: 20px;
+        overflow: scroll;
+        scrollbar-width: none;
+      }
     </style>
   </head>
   <body>
@@ -17,7 +79,6 @@
       console.log("Radhe Radhe...");
 
       function ChatInput({ chatMessages, setChatMessages }) {
-        //done...
         const [inputText, setInputText] = React.useState("");
         const [isLoading, setIsLoading] = React.useState(false);
         const saveInputText = (event) => {
@@ -30,7 +91,6 @@
           }
 
           setIsLoading(true);
-          // event.preventDefault()
           const newChatMessages = [
             ...chatMessages,
             {
@@ -41,17 +101,15 @@
           ];
           setIsLoading(false);
 
-          // setChatMessages(newChatMessages);
           setChatMessages([
             ...newChatMessages,
             {
-              message: "Loading...",
+              message: "Thinking...",
               sender: "bot",
               id: crypto.randomUUID(),
             },
           ]);
 
-          // const response = Chatbot.getResponse(inputText);
           const response = await Chatbot.getResponseAsync(inputText);
           setChatMessages([
             ...newChatMessages,
@@ -72,59 +130,48 @@
           }
         };
         return (
-          <>
-            {/*<form>*/}
+          <div className="chat-input-container">
             <input
               type="text"
               id="prompt"
               placeholder="Send the message to Chatbot"
               size="30"
+              className="chat-input"
               onChange={saveInputText}
               onKeyDown={sendOnKeyDown}
               value={inputText}
-              className="prompt-input"
             />
-            <button className="send-button" onClick={sendMessage} type="submit">
+            <button onClick={sendMessage} type="submit" className="send-button">
               Send
             </button>
-            {/*</form>*/}
-          </>
+          </div>
         );
       }
 
       const ChatMessage = ({ message, sender }) => {
-        // const message = props.message;
-        // const sender = props.sender;
-        // const {message, sender} = props;
-
-        /*(if (sender === "bot"){
-                return (
-                <div>
-                    <img src="./assets/avatar-jessica.jpeg" alt="" height="50" />
-                    {message}
-                </div>    
-                );
-            }*/
-
         return (
-          <div>
+          <div
+            className={
+              sender === "user" 
+                ? "chat-message-user"  
+                : "chat-message-robot"
+            }
+          >
             {sender === "bot" && (
-              <img src="./assets/avatar-jessica.jpeg" alt="" height="50" />
+              <img src="./assets/avatar-jessica.jpeg" alt=""  className="chat-message-profile"/>
             )}
-            {message}
+            <div className="chat-message-text">
+              {message}
+            </div>
             {sender === "user" && (
-              <img src="./assets/subhash.png" alt="" height="50" />
+              <img src="./assets/subhash.png" alt="" className="chat-message-profile" />
             )}
           </div>
         );
       };
       const ChatMessages = ({ chatMessages }) => {
-        // const [chatMessages, setChatMessages]=array;
-        // const chatMessages = array[0];
-        // const setChatMessages = array[1];
-
         return (
-          <>
+          <div className="chat-messages-container">
             {chatMessages.map((chatMessage) => {
               return (
                 <ChatMessage
@@ -134,46 +181,19 @@
                 />
               );
             })}
-          </>
+          </div>
         );
       };
-      /*Below are questions for lession 3 exercise...*/
-      /*3i. Insted of clicking the "Send" button, we can also send a message by pressing "Enter" on our keyboard. We'll add this feature to the project.
-        -Add a new event prop onKeyDown to the <input>. This runs a function each time we press a key on our keyboard.
-        - The function gets an event parameneter, and we can get the key that was pressed using event.key
-        - If event.key is "Enter", send the message.*/
-      //actully i have already solved it by using form and type="submit" on the button...but let's do this way also.
-      //done...it was so obvious that I forgot to consider it.
-
-      /*3j. If we type in the <input> and press "Esc" (or "Escape") it should remove the text in the <input>
-       */
-      //done....
-
-      /*3k. In the real world, the Chatbot does not respond immediately, it takes some time to think, and then respond (see the final Chatbot porject).
-      We'll learn how to handle this situation.
-        - Change Chatbot.getResponse to Chatbot.getResponseAsync (for this function, the chatbot thinks for a second, and then responds.
-        - Chatbot.getResponseAsync returns a promise (promise = a value that is not available yet, but will be available in the future).
-        - Add await in front of Chatbot.getResponseAsync to wait for it to finish (wait for the value to be available in the future).
-        - Add async in front of function sendMessage() (because we can only use await inside an async function).
-        */
-
-      /*3l. Now that we wait for the Chatbot's response, let's improve the app:
-        - Update the code so it removes the text in the textbox right after sending our message (otherwise, the text will stay in the textbox for a while, until the response is ready, which doesn't look good).
-        - While waiting for the Chatbot's response, display a "Loading..." message and remove it after.*/
 
       const App = () => {
         const [chatMessages, setChatMessages] = React.useState([]);
         return (
-          <div>
+          <div className="app-container">
+            <ChatMessages chatMessages={chatMessages} />
             <ChatInput
               chatMessages={chatMessages}
               setChatMessages={setChatMessages}
             />
-            <ChatMessage message="hello chatbot" sender="user" />
-            <ChatMessage message="Hello! How can I help you?" sender="bot" />
-            <ChatMessage message="can you get me todays date?" sender="user" />
-            <ChatMessage message="Today is September 27" sender="bot" />
-            <ChatMessages chatMessages={chatMessages} />
           </div>
         );
       };
@@ -184,6 +204,3 @@
     </script>
   </body>
 </html>
-
-<!-- component:
- Just a piece of the website-->

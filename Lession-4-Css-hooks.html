@@ -3,74 +3,6 @@
   <head>
     <title>Chatbot</title>
     <style>
-      * {
-        box-sizing: border-box;
-        font-family: cursive;
-      }
-      .send-button {
-        background-color: rgb(25, 135, 84);
-        border: none;
-        color: white;
-        padding: 12px 20px;
-        font-size: 15px;
-        margin-left: 10px;
-        border-radius: 0.5rem;
-        cursor: pointer;
-      }
-      .prompt-input {
-        padding: 12px 15px;
-        border-radius: 0.5rem;
-        border: 1px solid;
-        font-size: 15px;
-        flex-grow: 1;
-      }
-      .prompt-input:focus {
-        outline: none;
-      }
-      .prompt-form {
-        display: flex;
-      }
-      img {
-        border-radius: 50%;
-      }
-      .chatbubble-container {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-      }
-      .chat-bubble {
-        position: relative;
-        background-color: rgb(202, 201, 201);
-        color: black;
-        font-size: 15px;
-        padding: 12px 20px;
-        border-radius: 0.5rem;
-        max-width:100%;
-        height: auto;
-      }
-      .app-container {
-        max-width: 600px;
-        margin: auto;
-      }
-      .chat-message-user {
-        justify-content: flex-end;
-      }
-      .chat-bubble-user::after{
-        right: 0;
-        translate: 50% 50%;
-      }
-      .chat-bubble-bot::after{
-        left:0;
-        translate: -50% 50%;
-      }
-      .chat-bubble::after{
-        content: "";
-        background-color:rgb(202, 201, 201);
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        rotate: 45deg;
-      }
     </style>
   </head>
   <body>
@@ -140,7 +72,7 @@
           }
         };
         return (
-          <div className="prompt-form">
+          <>
             {/*<form>*/}
             <input
               type="text"
@@ -156,7 +88,7 @@
               Send
             </button>
             {/*</form>*/}
-          </div>
+          </>
         );
       }
 
@@ -175,17 +107,11 @@
             }*/
 
         return (
-          <div
-            className={
-              sender === "user"
-                ? "chat-message-user chatbubble-container"
-                : "chat-message-bot chatbubble-container"
-            }
-          >
+          <div>
             {sender === "bot" && (
               <img src="./assets/avatar-jessica.jpeg" alt="" height="50" />
             )}
-            <p className={sender ==="user"? "chat-bubble-user chat-bubble": "chat-bubble-bot chat-bubble"}>{message}</p>
+            {message}
             {sender === "user" && (
               <img src="./assets/subhash.png" alt="" height="50" />
             )}
@@ -238,7 +164,7 @@
       const App = () => {
         const [chatMessages, setChatMessages] = React.useState([]);
         return (
-          <div className="app-container">
+          <div>
             <ChatInput
               chatMessages={chatMessages}
               setChatMessages={setChatMessages}

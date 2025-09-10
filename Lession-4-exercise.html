@@ -36,6 +36,12 @@
         flex-direction: column;
         gap:1rem
       }
+      button{
+        width: max-content;
+      }
+      .counter-btns button{
+        border-radius: 0px;
+      }
     </style>
   </head>
   <body>
@@ -141,7 +147,6 @@
             const timeElem = React.useRef(null)
             React.useEffect(()=>{
                 setInterval(()=>{
-                    console.log("run Code")
                     setTime(dayjs().format('HH:mm:ss'))
                 },1000)
             },[timeElem])
@@ -152,8 +157,46 @@
             )
         }
 
-        /*Add console.log('run code'); inside setInterval and check how many times it runs. Then, remove the dependency array ([]) form React.useEffect() and check how many times it runs.*/
+        /*4g. Add console.log('run code'); inside setInterval and check how many times it runs. Then, remove the dependency array ([]) form React.useEffect() and check how many times it runs.*/
         //It is running same irrespective of dependency array.
+
+        /*4h. Create the counter app below (you can use the code for exercise 3c as a starting point or start from an empty React website).
+          - Note: do not put the counter in a separate component for now.
+          - Create a "Reset" button that resets the count to 0.
+          - Create an "Auto Click" button. When clicked, your code will click the counter every second (use setInterval). To click a button with code, first save the button element in your JavaScript (use useRef). Once you have the button element, run buttonElem.click().*/
+          const Counter =()=>{
+            const [counter, setCounter] = React.useState(0)
+            const counterBtn = React.useRef(null)
+            
+            const click =()=>{
+              setCounter(counter+1)
+            }
+            const reset =()=>{
+              setCounter(0)
+            }
+
+            const autoClick =()=>{
+              const btn = counterBtn.current
+              if (btn){
+                setInterval(()=>{
+                  btn.click()
+                },1000)
+              }
+            }
+
+            return(
+              <div className="counter-btns">
+              <button onClick={click} ref={counterBtn} className="btn">Clicked {counter} {counter ===1? "time":"times"}</button>
+              <button onClick={reset} className="btn">Reset</button>
+              <button onClick={autoClick} className="btn">Auto Click</button>
+              </div>
+            )
+          }
+          /*4i. Style the counter using this design:
+            -Background color:rgb(25, 135, 84)*/
+          // I'm going to cheat for this exercise because i already have created the style in very first exercise...now am using the same to style these buttons.
+
+          /*Further exercises are in chatbot project...*/
         
       const App = () => {
         return (
@@ -162,6 +205,7 @@
             <Button />
             <LoginForm />
             <Clock />
+            <Counter />
           </div>
         );
       };
